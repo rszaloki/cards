@@ -9,7 +9,10 @@ require(["RTree.js"],function(RTree){
         cardNumber = 0,
         css,
         canTransform,
-        transformProp=['transform','webkitTransform','mozTransform'];
+        transformProp=['transform','webkitTransform','mozTransform'],
+        deckRect=deckView.getBoundingClientRect(),
+        deckWidth=deckRect.width,
+        deckHeight=deckRect.height;
 
 
     // ugly extend from https://github.com/JSFixed/JSFixed/issues/16
@@ -27,6 +30,8 @@ require(["RTree.js"],function(RTree){
         css = item;
         return deckView.style[css] !== undefined;
     });
+
+
 
     function generateId() {
         return [0,0,0,0].map(function(item){ return Math.floor(Math.random()*10000).toString(24)}).join('-');
@@ -82,6 +87,7 @@ require(["RTree.js"],function(RTree){
 
         // --- view
         refreshCard(card);
+        updateDeckView(card);        
     }
 
     function updateCard(card) {
@@ -90,6 +96,7 @@ require(["RTree.js"],function(RTree){
         addCard(card);
         // --- view
         refreshCardCss(card);
+        updateDeckView(card);
     }
 
     function makeRoom(card) {
@@ -119,12 +126,22 @@ require(["RTree.js"],function(RTree){
         }
 
         if(Math.abs(card.x - mx) < Math.abs(card.y - my)) {
-            card.x = Math.max(0,mx);
+            card.x = mx
         } else {
-            card.y = Math.max(0,my);
+            card.y = my;
         }
 
+        updateDeckView(card);
+
+
         console.log("Card: "+card.id+" moved to: "+card.x+":"+card.y);
+    }
+
+    function updateDeckView(card){
+        deckWidth=Math.max(deckWidth,card.x+card.w);
+        deckHeight=Math.max(deckHeight,card.y+card.h);
+        deckView.style.width=deckWidth+'px';
+        deckView.style.height=deckHeight+'px';        
     }
 
 
@@ -141,7 +158,7 @@ require(["RTree.js"],function(RTree){
             }
         } else {
             var type = landscape;
-            addCard(createCard(e.pageX-Math.floor(type.w/2),e.pageY-Math.floor(type.h/2),type,"Card "+(++cardNumber)));
+            addCard(createCard(Math.max(e.offsetX-Math.floor(type.w/2),0),Math.max(e.offsetY-Math.floor(type.h/2),0),type,"Card "+(++cardNumber)));
         }
     });
 

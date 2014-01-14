@@ -6,6 +6,7 @@ body {
     margin:0;
     display:flex;
     align-items:center;
+    justify-content:center;
 }
 
 header {
@@ -17,15 +18,15 @@ header {
 }
 
 ul {
-    position:absolute;
+    position:relative;
     list-style-type:none;
     padding:0;
     margin:0;
     background:pink;
-    overflow:auto;
     transition:all 0.1s linear;
     min-height:400px;
     min-width:600px;
+    display:inline-block;
 }
 
 li {
