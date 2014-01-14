@@ -1,0 +1,49 @@
+html,body {
+    width:100%;
+}
+
+body {
+    margin:0;
+    display:flex;
+    align-items:center;
+}
+
+header {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:20px;
+}
+
+ul {
+    position:absolute;
+    list-style-type:none;
+    padding:0;
+    margin:0;
+    background:pink;
+    overflow:auto;
+    transition:all 0.1s linear;
+    min-height:400px;
+    min-width:600px;
+}
+
+li {
+    position:absolute;
+    left:0;
+    top:0;
+    background:yellow;
+    padding:0;
+    margin:0;
+    transition:all 0.1s linear;
+}
+
+.portrait {
+    width:200px;
+    height:300px;
+}
+
+.landscape {
+    width:300px;
+    height:200px;
+}
