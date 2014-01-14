@@ -46,7 +46,7 @@ require(["RTree.js"],function(RTree){
     function renderCard(card) {
         var cardE = document.createElement('li');
         cardE.id = card.id;
-        cardE.innerHTML = '<b>'+card.title+'</b><button data-flip-id="'+card.id+'">flip</button>';
+        cardE.innerHTML = '<div class="cardcontent"><b>'+card.title+'</b><button data-flip-id="'+card.id+'">flip</button></div>';
         refreshCardCss(card,cardE);
         deckView.appendChild(cardE);
     }
@@ -115,15 +115,15 @@ require(["RTree.js"],function(RTree){
         var mx, my;
 
         if(card.y < anchor.y) {
-            my = anchor.y - card.h - cardBorders.top;
+            my = anchor.y - card.h;
         } else {
-            my = anchor.y + anchor.h + cardBorders.bottom;
+            my = anchor.y + anchor.h;
         }
 
         if(card.x < anchor.x) {
-            mx = anchor.x - card.w - cardBorders.left;
+            mx = anchor.x - card.w;
         } else {
-            mx = anchor.x + anchor.w + cardBorders.right;
+            mx = anchor.x + anchor.w;
         }
 
         if(Math.abs(card.x - mx) < Math.abs(card.y - my)) {

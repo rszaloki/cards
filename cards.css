@@ -36,13 +36,21 @@ li {
     position:absolute;
     left:0;
     top:0;
-    background:#ecf0f1;
     padding:0;
     margin:0;
     transition:all 0.1s linear;
+}
+
+.cardcontent {
+    position:absolute;
+    background:#ecf0f1;
     box-shadow: 1px 1px 3px 2px rgba(50, 50, 50, 0.75);
     border-radius:10px;
     overflow:hidden;
+    top:10px;
+    left:10px;
+    right:10px;
+    bottom:10px;
 }
 
 .portrait {
