@@ -4,13 +4,13 @@ require(["RTree.js"],function(RTree){
     var deck = {},
         deckLayout = new RTree(),
         cardBorders = {
-            left:2,
-            right:5,
-            bottom:5,
-            top:2
+            left:10,
+            right:10,
+            bottom:10,
+            top:10
         },
-        portrait = { w:120+cardBorders.left+cardBorders.right, h:180+cardBorders.top+cardBorders.bottom, css:"portrait" },
-        landscape = { w:180+cardBorders.left+cardBorders.right, h:120+cardBorders.top+cardBorders.bottom, css:"landscape" },
+        portrait = { w:120, h:180, css:"portrait" },
+        landscape = { w:180, h:120, css:"landscape" },
         deckView = document.getElementById('deck'),
         cardNumber = 0,
         css,
@@ -157,7 +157,7 @@ require(["RTree.js"],function(RTree){
                 }
                 updateCard(card);
             }
-        } else if(e.currentTarget.id==='deck'){
+        } else if(e.target.id==='deck'){
             var type = landscape;
             addCard(createCard(e.offsetX-Math.floor(type.w/2),e.offsetY-Math.floor(type.h/2),type,"Card "+(++cardNumber)));
         }
