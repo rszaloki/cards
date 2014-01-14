@@ -81,9 +81,15 @@ require(["RTree.js"],function(RTree){
     }
 
     function addCard(card) {
-        makeRoom(card);
-
+        var removed = deckLayout.remove(card),
+            current;
         deckLayout.insert(card,card);
+        for( var i=0; i < removed.length; i++ ) {
+            current = removed[i].leaf;
+            moveCard(current,card);
+            addCard(current);
+        }
+
 
         // --- view
         refreshCard(card);
@@ -97,17 +103,6 @@ require(["RTree.js"],function(RTree){
         // --- view
         refreshCardCss(card);
         updateDeckView(card);
-    }
-
-    function makeRoom(card) {
-        var removed = deckLayout.remove(card),
-            current;
-        if(!removed.length) return true;
-        for( var i=0; i < removed.length; i++ ) {
-            current = removed[i].leaf;
-            moveCard(current,card);
-            addCard(current);
-        }
     }
 
     function moveCard(card, anchor) {
@@ -126,9 +121,9 @@ require(["RTree.js"],function(RTree){
         }
 
         if(Math.abs(card.x - mx) < Math.abs(card.y - my)) {
-            card.x = mx
+            card.x = Math.max(0,mx);
         } else {
-            card.y = my;
+            card.y = Math.max(0,my);
         }
 
         updateDeckView(card);
@@ -138,8 +133,8 @@ require(["RTree.js"],function(RTree){
     }
 
     function updateDeckView(card){
-        deckWidth=Math.max(deckWidth,card.x+card.w);
-        deckHeight=Math.max(deckHeight,card.y+card.h);
+        deckWidth=Math.max(deckWidth,card.x+card.w+30);
+        deckHeight=Math.max(deckHeight,card.y+card.h+30);
         deckView.style.width=deckWidth+'px';
         deckView.style.height=deckHeight+'px';        
     }
@@ -156,7 +151,7 @@ require(["RTree.js"],function(RTree){
                 }
                 updateCard(card);
             }
-        } else {
+        } else if(e.currentTarget.id==='deck'){
             var type = landscape;
             addCard(createCard(Math.max(e.offsetX-Math.floor(type.w/2),0),Math.max(e.offsetY-Math.floor(type.h/2),0),type,"Card "+(++cardNumber)));
         }
