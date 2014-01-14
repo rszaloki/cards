@@ -3,8 +3,14 @@ require(["RTree.js"],function(RTree){
 
     var deck = {},
         deckLayout = new RTree(),
-        portrait = { w:120, h:180, css:"portrait" },
-        landscape = { w:180, h:120, css:"landscape" },
+        cardBorders = {
+            left:2,
+            right:5,
+            bottom:5,
+            top:2
+        },
+        portrait = { w:120+cardBorders.left+cardBorders.right, h:180+cardBorders.top+cardBorders.bottom, css:"portrait" },
+        landscape = { w:180+cardBorders.left+cardBorders.right, h:120+cardBorders.top+cardBorders.bottom, css:"landscape" },
         deckView = document.getElementById('deck'),
         cardNumber = 0,
         css,
@@ -66,8 +72,8 @@ require(["RTree.js"],function(RTree){
 
     function createCard(x,y,type, title) {
         var id = "card_"+generateId(),
-            card = extend({ x:x,
-                            y:y,
+            card = extend({ x:Math.max(80,x),
+                            y:Math.max(80,y),
                             id:id,
                             title:title
                         },type);
@@ -109,21 +115,21 @@ require(["RTree.js"],function(RTree){
         var mx, my;
 
         if(card.y < anchor.y) {
-            my = anchor.y - card.h -1;
+            my = anchor.y - card.h - cardBorders.top;
         } else {
-            my = anchor.y + anchor.h +1;
+            my = anchor.y + anchor.h + cardBorders.bottom;
         }
 
         if(card.x < anchor.x) {
-            mx = anchor.x - card.w -1;
+            mx = anchor.x - card.w - cardBorders.left;
         } else {
-            mx = anchor.x + anchor.w +1;
+            mx = anchor.x + anchor.w + cardBorders.right;
         }
 
         if(Math.abs(card.x - mx) < Math.abs(card.y - my)) {
-            card.x = Math.max(0,mx);
+            card.x = Math.max(80,mx);
         } else {
-            card.y = Math.max(0,my);
+            card.y = Math.max(80,my);
         }
 
         updateDeckView(card);
@@ -133,8 +139,8 @@ require(["RTree.js"],function(RTree){
     }
 
     function updateDeckView(card){
-        deckWidth=Math.max(deckWidth,card.x+card.w+30);
-        deckHeight=Math.max(deckHeight,card.y+card.h+30);
+        deckWidth=Math.max(deckWidth,card.x+card.w+80);
+        deckHeight=Math.max(deckHeight,card.y+card.h+80);
         deckView.style.width=deckWidth+'px';
         deckView.style.height=deckHeight+'px';        
     }
@@ -153,7 +159,7 @@ require(["RTree.js"],function(RTree){
             }
         } else if(e.currentTarget.id==='deck'){
             var type = landscape;
-            addCard(createCard(Math.max(e.offsetX-Math.floor(type.w/2),0),Math.max(e.offsetY-Math.floor(type.h/2),0),type,"Card "+(++cardNumber)));
+            addCard(createCard(e.offsetX-Math.floor(type.w/2),e.offsetY-Math.floor(type.h/2),type,"Card "+(++cardNumber)));
         }
     });
 
